@@ -7,12 +7,25 @@ const obj = {
     b: 2
 }
 
+const arr = [100, 200];
+
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    next();
+  })
+
 app.get("/", (req, res) => {
     res.send("here is server part");
 })
 
-app.get("/json", (req, res) => {
+app.get("/obj", (req, res) => {
     res.json(obj);
+})
+
+app.get("/arr", (req, res) => {
+    res.json(arr);
 })
 
 app.listen(PORT, () => {
