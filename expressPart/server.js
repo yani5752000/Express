@@ -1,4 +1,6 @@
 const express = require("express");
+const merchant_model = require("./person_model");
+
 const app = express();
 const PORT = 8080;
 
@@ -26,6 +28,17 @@ app.get("/obj", (req, res) => {
 
 app.get("/arr", (req, res) => {
     res.json(arr);
+})
+
+app.get("/persons", (req, res) => {
+    merchant_model.getPersons()
+        .then(response => {
+            console.log("type of response: ", typeof response);
+            console.log("response in server: ", response);
+            res.status(200).send(response);
+            //res.json(response);
+        })
+        .catch(error => res.status(500).send(error));
 })
 
 app.listen(PORT, () => {
