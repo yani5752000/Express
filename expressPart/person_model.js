@@ -19,7 +19,20 @@ const getPersons = () => {
     })
 }
 
+const addPreson = ({name, email}) => {
+    return new Promise((resolve, reject) => {
+        pool.query("INSERT INTO persons(name, email) VALUES($1, $2) RETURNING *", [name, email], (error, result) => {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(result.rows);
+            }
+        })
+    })
+}
+
 
 module.exports = {
-    getPersons
+    getPersons,
+    addPreson
 };

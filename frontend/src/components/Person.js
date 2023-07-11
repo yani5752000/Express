@@ -9,7 +9,7 @@ class Person extends React.Component {
     render() {
         return (
             <div>
-                <p>Name: {this.props.person.name}, email: {this.props.person.email}</p>
+                <p>id: {this.props.person.id} Name: {this.props.person.name}, email: {this.props.person.email}</p>
             </div>
         )
     }

@@ -29,18 +29,7 @@ class App extends React.Component {
       })
       .catch(error => console.log("error: ", error))
     
-    axios.get("http://localhost:8080/persons")
-      .then(result => {
-        console.log("persons result: ", result);
-        const persons = result.data;
-        this.setState({person_names: persons.map(person => person.name)});
-        this.setState({persons: persons})
-        console.log("state.persons: ", this.state.person_names);
-        const he = this.state.person_names[0];
-        // console.log("print type of he: ", typeof he);
-        // console.log("print keys of he: ", Object.keys(he));
-        // console.log("print person: ", this.state.persons)
-      })
+    this.getPersons();
 
     axios.get("http://localhost:8080/arr")
       .then(result => {
@@ -49,6 +38,49 @@ class App extends React.Component {
         this.setState({arr});
         console.log("state.arr: ", this.state.arr);
       })
+  }
+  getPersons = () => {
+    fetch("http://localhost:8080/persons")
+      .then(result => {
+        return result.text();
+        // console.log("typeof result: ", typeof result);
+        // console.log("persons result: ", JSON.stringify(result));
+       //console.log(" result: ", JSON.stringify(result));
+        //this.setState({person_names: persons.map(person => person.name)});
+        // this.setState({persons: persons})
+        // console.log("state.persons: ", this.state.persons);
+        // const he = this.state.person_names[0];
+        // console.log("print type of he: ", typeof he);
+        // console.log("print keys of he: ", Object.keys(he));
+        // console.log("print person: ", this.state.persons)
+      })
+      .then((data) => {
+        console.log("persons data: ", data);
+        const persons = JSON.parse(data);
+        this.setState({persons: persons});
+        console.log("state.persons: ", this.state.persons);
+      })
+  }
+
+  createPerson = () => {
+    const name = prompt("Enter the name: ");
+    const email = prompt("Enter the email: ");
+    console.log("in createPerson: ", name + " " + email);
+    fetch('http://localhost:8080/persons/new', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({name, email}),
+    })
+      .then(response => {
+        return response.text();
+      })
+      .then(data => {
+        alert(data);
+        this.getPersons();
+      });
+
   }
   render() {
     return (
@@ -77,6 +109,8 @@ class App extends React.Component {
           <h1>persons[2] is {this.state.person_names[2]}</h1>
           <Person name = {this.state.name} email = {this.state.email} person={this.state.person1} />
           <Persons persons={this.state.persons}></Persons>
+          <button onClick={this.createPerson}>Create Person</button>
+          <button>Delete Person</button>
         </header> 
       </div>
     );

@@ -1,5 +1,5 @@
 const express = require("express");
-const merchant_model = require("./person_model");
+const {getPersons, addPreson} = require("./person_model");
 
 const app = express();
 const PORT = 8080;
@@ -12,7 +12,7 @@ const obj = {
 const arr = [100, 200];
 
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
     res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     next();
@@ -31,7 +31,7 @@ app.get("/arr", (req, res) => {
 })
 
 app.get("/persons", (req, res) => {
-    merchant_model.getPersons()
+    getPersons()
         .then(response => {
             console.log("type of response: ", typeof response);
             console.log("response in server: ", response);
@@ -39,6 +39,17 @@ app.get("/persons", (req, res) => {
             //res.json(response);
         })
         .catch(error => res.status(500).send(error));
+})
+
+app.post("persons/new", (req, res) => {
+    const {name, email} = req.body;
+    addPreson({name, email})
+        .then((result) => {
+            res.status(200).sendJ(result);
+        })
+        .catch((error) => {
+            res.status(500).send(error);
+        })
 })
 
 app.listen(PORT, () => {

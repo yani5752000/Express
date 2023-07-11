@@ -7,7 +7,7 @@ class Persons extends React.Component {
             <div>
                 <ol>
                     {this.props.persons.map((person, i) => {
-                        return <li>
+                        return <li key={i}>
                             <Person key={i} person={person}></Person>
                         </li>
                     })}
