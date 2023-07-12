@@ -40,25 +40,14 @@ class App extends React.Component {
       })
   }
   getPersons = () => {
-    fetch("http://localhost:8080/persons")
+    axios.get("http://localhost:8080/persons")
       .then(result => {
-        return result.text();
-        // console.log("typeof result: ", typeof result);
-        // console.log("persons result: ", JSON.stringify(result));
-       //console.log(" result: ", JSON.stringify(result));
-        //this.setState({person_names: persons.map(person => person.name)});
-        // this.setState({persons: persons})
-        // console.log("state.persons: ", this.state.persons);
-        // const he = this.state.person_names[0];
-        // console.log("print type of he: ", typeof he);
-        // console.log("print keys of he: ", Object.keys(he));
-        // console.log("print person: ", this.state.persons)
-      })
-      .then((data) => {
-        console.log("persons data: ", data);
-        const persons = JSON.parse(data);
+        console.log("persons result: ", result);
+        const persons = result.data;
         this.setState({persons: persons});
-        console.log("state.persons: ", this.state.persons);
+      })
+      .then(() => {
+        console.log("state.persons: ", this.state);
       })
   }
 
@@ -66,6 +55,20 @@ class App extends React.Component {
     const name = prompt("Enter the name: ");
     const email = prompt("Enter the email: ");
     console.log("in createPerson: ", name + " " + email);
+
+    // axios.post("http://localhost:8080/persons/new", {
+    //   body: JSON.stringify({name, email})
+    // })
+    //   .then(result => {
+    //     console.log("persons result: ", result);
+    //     //const persons = result.data;
+    //     //this.setState({persons: persons});
+    //     this.getPersons();
+    //   })
+    //   .then(() => {
+    //     console.log("state.persons here: ", this.state);
+    //   })
+
     fetch('http://localhost:8080/persons/new', {
       method: 'POST',
       headers: {
@@ -80,6 +83,7 @@ class App extends React.Component {
         alert(data);
         this.getPersons();
       });
+      //.catch(error => console.log("error: ", error))
 
   }
   render() {

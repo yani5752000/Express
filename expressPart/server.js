@@ -1,6 +1,8 @@
 const express = require("express");
 const {getPersons, addPreson} = require("./person_model");
 
+const cors = require("cors");
+
 const app = express();
 const PORT = 8080;
 
@@ -11,12 +13,15 @@ const obj = {
 
 const arr = [100, 200];
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    next();
-  })
+app.use(cors());
+app.use(express.json());
+
+// app.use((req, res, next) => {
+//     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//     // res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS");
+//     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+//     next();
+//   })
 
 app.get("/", (req, res) => {
     res.send("here is server part");
@@ -41,11 +46,16 @@ app.get("/persons", (req, res) => {
         .catch(error => res.status(500).send(error));
 })
 
-app.post("persons/new", (req, res) => {
+app.post("/persons/new", (req, res) => {
+    console.log("got in post persons/new");
+    console.log("typeof req.body: ", typeof req.body);
+    console.log("req.body: ", req.body);
     const {name, email} = req.body;
+    console.log("namd and email: ", name + " " + email);
     addPreson({name, email})
         .then((result) => {
-            res.status(200).sendJ(result);
+            res.status(200).send(result);
+            console.log("gggod");
         })
         .catch((error) => {
             res.status(500).send(error);
