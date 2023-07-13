@@ -56,35 +56,18 @@ class App extends React.Component {
     const email = prompt("Enter the email: ");
     console.log("in createPerson: ", name + " " + email);
 
-    // axios.post("http://localhost:8080/persons/new", {
-    //   body: JSON.stringify({name, email})
-    // })
-    //   .then(result => {
-    //     console.log("persons result: ", result);
-    //     //const persons = result.data;
-    //     //this.setState({persons: persons});
-    //     this.getPersons();
-    //   })
-    //   .then(() => {
-    //     console.log("state.persons here: ", this.state);
-    //   })
-
-    fetch('http://localhost:8080/persons/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({name, email}),
-    })
-      .then(response => {
-        return response.text();
-      })
-      .then(data => {
-        alert(data);
+    axios.post("http://localhost:8080/persons/new", {name, email})
+      .then(result => {
+        console.log("persons result: ", result);
         this.getPersons();
-      });
-      //.catch(error => console.log("error: ", error))
+      })
+  }
 
+  deletePerson = () => {
+    const id = prompt("Enter the id: ");
+    axios.delete(`http//:localhost:8080/persons/delete/{$id}`)
+      .then(() => this.getPersons())
+      .catch((error) => console.log(error))
   }
   render() {
     return (

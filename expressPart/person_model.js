@@ -31,8 +31,21 @@ const addPreson = ({name, email}) => {
     })
 }
 
+const deletePerson = (id) => {
+    return new Promise((resolve, reject) => {
+        pool.query("DELETE FROM persons WHERE id=$1", [id], (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(`Person deleted with id {$id}`);
+            }
+        })
+    })
+}
+
 
 module.exports = {
     getPersons,
-    addPreson
+    addPreson,
+    deletePerson
 };

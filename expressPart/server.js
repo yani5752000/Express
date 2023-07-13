@@ -16,13 +16,6 @@ const arr = [100, 200];
 app.use(cors());
 app.use(express.json());
 
-// app.use((req, res, next) => {
-//     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-//     // res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS");
-//     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-//     next();
-//   })
-
 app.get("/", (req, res) => {
     res.send("here is server part");
 })
