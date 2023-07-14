@@ -37,7 +37,7 @@ const deletePerson = (id) => {
             if (error) {
                 reject(error);
             } else {
-                resolve(`Person deleted with id {$id}`);
+                resolve(`Person deleted with id ${id}`);
             }
         })
     })

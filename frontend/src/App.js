@@ -65,8 +65,11 @@ class App extends React.Component {
 
   deletePerson = () => {
     const id = prompt("Enter the id: ");
-    axios.delete(`http//:localhost:8080/persons/delete/{$id}`)
-      .then(() => this.getPersons())
+    axios.delete(`http://localhost:8080/persons/delete/${id}`)
+      .then((result) => {
+        console.log("delete result: ", result);
+        this.getPersons();
+      })
       .catch((error) => console.log(error))
   }
   render() {
@@ -96,8 +99,8 @@ class App extends React.Component {
           <h1>persons[2] is {this.state.person_names[2]}</h1>
           <Person name = {this.state.name} email = {this.state.email} person={this.state.person1} />
           <Persons persons={this.state.persons}></Persons>
-          <button onClick={this.createPerson}>Create Person</button>
-          <button>Delete Person</button>
+          <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.createPerson}>Create Person</button>
+          <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.deletePerson}>Delete Person</button>
         </header> 
       </div>
     );

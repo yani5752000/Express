@@ -1,10 +1,12 @@
 const express = require("express");
-const {getPersons, addPreson} = require("./person_model");
+const {getPersons, addPreson, deletePerson} = require("./person_model");
 
 const cors = require("cors");
 
 const app = express();
 const PORT = 8080;
+app.use(cors());
+app.use(express.json());
 
 const obj = {
     a: 1,
@@ -12,9 +14,6 @@ const obj = {
 }
 
 const arr = [100, 200];
-
-app.use(cors());
-app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("here is server part");
@@ -51,6 +50,16 @@ app.post("/persons/new", (req, res) => {
             console.log("gggod");
         })
         .catch((error) => {
+            res.status(500).send(error);
+        })
+})
+
+app.delete("/persons/delete/:id", (req, res) => {
+    deletePerson(req.params.id)
+        .then((result) => {
+            res.status(200).send(result);
+        })
+        .catch(error => {
             res.status(500).send(error);
         })
 })
