@@ -3,12 +3,14 @@ import logo from './logo.svg';
 import './App.css';
 import Person from './components/Person';
 import Persons from './components/Persons';
+import Posts from './components/Posts';
 import axios from 'axios';
 
 class App extends React.Component {
   state = {
     theName: "John",
     persons: [],
+    posts: [],
     person_names: [],
     obj: {},
     arr: [],
@@ -30,6 +32,7 @@ class App extends React.Component {
       .catch(error => console.log("error: ", error))
     
     this.getPersons();
+    this.getPosts();
 
     axios.get("http://localhost:8080/arr")
       .then(result => {
@@ -72,6 +75,36 @@ class App extends React.Component {
       })
       .catch((error) => console.log(error))
   }
+
+  getPosts = () => {
+    axios.get("http://localhost:8080/posts")
+      .then(result => {
+        console.log("posts result: ", result);
+        const posts = result.data;
+        this.setState({posts: posts});
+      })
+  }
+
+  createPost = () => {
+    const content = prompt("Enter the content: ");
+    console.log("in createPost: ", content);
+
+    axios.post("http://localhost:8080/posts/new", {content})
+      .then(result => {
+        console.log("posts result: ", result);
+        this.getPosts();
+      })
+  }
+
+  deletePost = () => {
+    const id = prompt("Enter the id: ");
+    axios.delete(`http://localhost:8080/posts/delete/${id}`)
+      .then((result) => {
+        console.log("delete result: ", result);
+        this.getPosts();
+      })
+      .catch((error) => console.log(error))
+  }
   render() {
     return (
       <div className="App">
@@ -101,6 +134,9 @@ class App extends React.Component {
           <Persons persons={this.state.persons}></Persons>
           <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.createPerson}>Create Person</button>
           <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.deletePerson}>Delete Person</button>
+          <Posts posts={this.state.posts}></Posts>
+          <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.createPost}>Create Post</button>
+          <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.deletePost}>Delete Post</button>
         </header> 
       </div>
     );

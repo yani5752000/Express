@@ -7,9 +7,9 @@ const pool = new Pool({
     port: 5432
 })
 
-const getPersons = () => {
+const getPosts = () => {
     return new Promise((resolve, reject) => {
-        pool.query("SELECT * FROM persons ORDER BY id ASC", (error, result) => {
+        pool.query("SELECT * FROM posts ORDER BY id ASC", (error, result) => {
             if (error) {
                 reject(error);
             } else { 
@@ -19,9 +19,10 @@ const getPersons = () => {
     })
 }
 
-const addPreson = ({name, email}) => {
+const addPost = ({content}) => {
+    console.log("in post_model addPost content is: ", content)
     return new Promise((resolve, reject) => {
-        pool.query("INSERT INTO persons(name, email) VALUES($1, $2) RETURNING *", [name, email], (error, result) => {
+        pool.query("INSERT INTO posts(content) VALUES($1) RETURNING *", [content], (error, result) => {
             if(error) {
                 reject(error);
             } else {
@@ -31,9 +32,9 @@ const addPreson = ({name, email}) => {
     })
 }
 
-const deletePerson = (id) => {
+const deletePost = (id) => {
     return new Promise((resolve, reject) => {
-        pool.query("DELETE FROM persons WHERE id=$1", [id], (error, result) => {
+        pool.query("DELETE FROM posts WHERE id=$1", [id], (error, result) => {
             if (error) {
                 reject(error);
             } else {
@@ -55,10 +56,8 @@ const createTablePosts = () => {
     })
 }
 
-
 module.exports = {
-    getPersons,
-    addPreson,
-    deletePerson,
-    createTablePosts
+    getPosts,
+    addPost,
+    deletePost
 };
