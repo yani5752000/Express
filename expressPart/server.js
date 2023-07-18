@@ -68,6 +68,11 @@ app.get("/arr", (req, res) => {
 //         })
 // })
 
+app.post("/register", (req, res) => {
+    const {email, password} = req.body;
+    console.log("in server: ", email);
+})
+
 app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
     createTablePosts()

@@ -4,6 +4,7 @@ import './App.css';
 import Person from './components/Person';
 import Persons from './components/Persons';
 import Posts from './components/Posts';
+import Form from './components/Form';
 import axios from 'axios';
 
 class App extends React.Component {
@@ -137,6 +138,7 @@ class App extends React.Component {
           <Posts posts={this.state.posts}></Posts>
           <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.createPost}>Create Post</button>
           <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.deletePost}>Delete Post</button>
+          <Form></Form>
         </header> 
       </div>
     );

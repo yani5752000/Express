@@ -57,6 +57,7 @@ const createTablePosts = () => {
 
 
 module.exports = {
+    pool,
     getPersons,
     addPreson,
     deletePerson,
