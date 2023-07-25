@@ -9,9 +9,12 @@ app.use(cors());
 app.use(express.json());
 const personsRouter = require("./routes/persons");
 const postsRouter = require("./routes/posts");
+const registerRouter = require("./routes/register");
 
 app.use("/persons", personsRouter);
 app.use("/posts",postsRouter);
+app.use("/register", registerRouter);
+
 const obj = {
     a: 1,
     b: 2
