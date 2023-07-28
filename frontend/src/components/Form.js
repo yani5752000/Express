@@ -1,26 +1,15 @@
 import React from "react";
 
 class Form extends React.Component {
-    register = () => {
-
-    };
-
-    handleEmailChange = () => {
-
-    };
-
-    handlePasswordChange = () => {
-
-    };
-
     render() {
+        let { handleChange, handleSubmit } = this.props;
         return (
-            <form onSubmit={this.register}>
+            <form onSubmit={handleSubmit}>
                 <h3>Register</h3>
                 <label>Email</label>
-                <input type='email' onChange={this.handleEmailChange}></input>
+                <input type='email' name="email" onChange={handleChange}></input>
                 <label>Password</label>
-                <input onChange={this.handlePasswordChange}></input>
+                <input type="password" name="password" onChange={handleChange}></input>
                 <button type='submit'>Register</button>
             </form>
         )

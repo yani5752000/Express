@@ -1,10 +1,10 @@
 const Pool = require("pg").Pool;
-const pool = Pool({
+const pool = new Pool({
     user: "my_user",
     database: "my_database",
     password: "root",
     host: "localhost",
-    port: 4321
+    port: 5432
 })
 
 const registerUser = ({email, password}) => {
@@ -33,4 +33,18 @@ const findUserByEmail = (email) => {
     })
 };
 
-module.exports = { registerUser, findUserByEmail };
+const getUsers = () => {
+    console.log("in get users model");
+    const queryString = "SELECT * FROM users ORDER BY id ASC";
+    pool.query(queryString, (error, result) => {
+        return new Promise((resolve, reject) => {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(result.rows);
+            }
+        })
+    })
+};
+
+module.exports = { registerUser, findUserByEmail, getUsers };

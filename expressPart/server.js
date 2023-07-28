@@ -10,10 +10,12 @@ app.use(express.json());
 const personsRouter = require("./routes/persons");
 const postsRouter = require("./routes/posts");
 const registerRouter = require("./routes/register");
+const usersRouter = require("./routes/users");
 
 app.use("/persons", personsRouter);
-app.use("/posts",postsRouter);
+app.use("/posts", postsRouter);
 app.use("/register", registerRouter);
+app.use("/users", usersRouter);
 
 const obj = {
     a: 1,

@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-import { registerUser, findUserByEmail } from "../user_model";
+const { registerUser, findUserByEmail } = require("../user_model")
 
 router.post("/", (req, res) => {
+    console.log("in register");
     const { email, password } = req.body;
     //const check = findUserByEmail(email); 
     registerUser({ email, password })
