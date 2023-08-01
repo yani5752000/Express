@@ -3,6 +3,7 @@ const router = express.Router();
 const { getUsers } = require("../user_model");
 
 router.get("/", (req, res) => {
+    console.log("in get users");
     getUsers()
         .then(response => {
             res.status(200).send(response)

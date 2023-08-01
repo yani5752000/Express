@@ -1,19 +1,19 @@
 import React from "react";
 
-class Form extends React.Component {
+class Login extends React.Component {
     render() {
-        let { handleChange, handleSubmit, task } = this.props;
+        let { handleChange, handleSubmit } = this.props;
         return (
             <form onSubmit={handleSubmit}>
-                <h3>{task}</h3>
+                <h3>Login</h3>
                 <label>Email</label>
                 <input type='email' name="email" onChange={handleChange}></input>
                 <label>Password</label>
                 <input type="password" name="password" onChange={handleChange}></input>
-                <button type='submit'>{task}</button>
+                <button type='submit'>Login</button>
             </form>
         )
     }
 }
 
-export default Form;
+export default Login;

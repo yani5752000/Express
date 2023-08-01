@@ -2,16 +2,21 @@ const express = require("express");
 const {getPersons, addPreson, deletePerson, createTablePosts} = require("./person_model");
 
 const cors = require("cors");
+const cookieSession = require("cookie-session");
 
 const app = express();
 const PORT = 8080;
 app.use(cors());
 app.use(express.json());
+app.use(cookieSession({
+    name: "session",
+    keys: ["secret"],
+    maxAge: 24 * 60 * 60 * 1000
+}));
 const personsRouter = require("./routes/persons");
 const postsRouter = require("./routes/posts");
 const registerRouter = require("./routes/register");
 const usersRouter = require("./routes/users");
-
 app.use("/persons", personsRouter);
 app.use("/posts", postsRouter);
 app.use("/register", registerRouter);
@@ -73,10 +78,10 @@ app.get("/arr", (req, res) => {
 //         })
 // })
 
-app.post("/register", (req, res) => {
-    const {email, password} = req.body;
-    console.log("in server: ", email);
-})
+// app.post("/register", (req, res) => {
+//     const {email, password} = req.body;
+//     console.log("in server: ", email);
+// })
 
 app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);

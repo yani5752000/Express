@@ -9,6 +9,7 @@ router.post("/", (req, res) => {
     registerUser({ email, password })
         .then((result) => {
             console.log(result);
+            res.status(200).send(result);
         })
         .catch((error) => console.log(error))
 

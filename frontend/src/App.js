@@ -1,6 +1,11 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './components';
+import Home from './pages/home';
+import Register from './pages/register';
+import Login from './pages/login';
 import Person from './components/Person';
 import Persons from './components/Persons';
 import Posts from './components/Posts';
@@ -105,10 +110,35 @@ class App extends React.Component {
       }
   };
 
-  handleRegisterSubmit = () => {
+  handleRegisterSubmit = (event) => {
+    event.preventDefault();
     const email = this.state.newUserCredentials.email;
     const password = this.state.newUserCredentials.password;
+    console.log("in register submit");
+    //this.setState({ newUserCredentials: { email: "", password: "" } });
     axios.post("http://localhost:8080/register", {email, password})
+      .then((result) => {
+        console.log("it is now " + this.state.newUserCredentials.email + " and  " + this.state.newUserCredentials.password);
+        console.log("user register result: ", result);
+      })
+  };
+
+  handleLoginFormChange = (event) => {
+    let input_name = event.target.name;
+    let input_value = event.target.value;
+    let userCredentials = this.state.userCredentials;
+
+    if (userCredentials.hasOwnProperty(input_name)) {
+      userCredentials[input_name] = input_value;
+      this.setState({ userCredentials: userCredentials });
+    }
+};
+
+  handleLoginSubmit = () => {
+    const email = this.state.newUserCredentials.email;
+    const password = this.state.newUserCredentials.password;
+    this.setState({ userCredentials: { email: "", password: "" } });
+    axios.post("http://localhost:8080/login", {email, password})
       .then()
   };
 
@@ -122,6 +152,25 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
+          <Router>
+              <Navbar />
+              <Routes>
+                  <Route path='/' element={<Home />} />
+                  <Route path='/login' element={<Login
+                    task="Login"
+                    handleChange={this.handleLoginFormChange} 
+                    handleSubmit={this.handleLoginSubmit}
+                     />} />
+                  <Route path='/register' 
+                    element={<Register 
+                      task="Register"
+                      handleChange={this.handleRegisterFormChange} 
+                      handleSubmit={this.handleRegisterSubmit} 
+                      />} />
+                  {/* <Route path='/blogs' element={<Blogs />} />
+                  <Route path='/sign-up' element={<SignUp />} /> */}
+              </Routes>
+          </Router>
           <h1>Hi here</h1>
           
           <Persons persons={this.state.persons}></Persons>
@@ -131,10 +180,10 @@ class App extends React.Component {
           <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.createPost}>Create Post</button>
           <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.deletePost}>Delete Post</button>
           <button style={{height:50, width: 100, color:"blue", backgroundColor:"red"}} onClick={this.registerUser}>Register</button>
-          <Form 
+          {/* <Form 
             handleChange={this.handleRegisterFormChange} 
             handleSubmit={this.handleRegisterSubmit}>
-          </Form>
+          </Form> */}
           <p>hhii: {this.state.newUserCredentials.email}</p>
         </header> 
       </div>
