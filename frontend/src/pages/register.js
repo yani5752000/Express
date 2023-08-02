@@ -1,9 +1,17 @@
 import React from "react";
 import Form from "../components/Form";
+import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 class Register extends React.Component {
     render() {
-        let { handleChange, handleSubmit, task } = this.props;
+        const { handleChange, handleSubmit, task, registered, setRegisteredTo } = this.props;
+        if(registered) {
+            setRegisteredTo(false);
+            return (
+                <Navigate to="/" />
+            )
+        }
         return (
             <>
                 <Form

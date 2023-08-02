@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 import Navbar from './components';
@@ -20,8 +20,10 @@ class App extends React.Component {
     newUserCredentials: {
       email: "",
       password: ""
-    }
+    },
+    registered: false
   }
+
   componentDidMount() {
     console.log("mounted")
     
@@ -110,6 +112,10 @@ class App extends React.Component {
       }
   };
 
+  setRegisteredTo = (value) => {
+    this.setState({registered: value});
+  }
+
   handleRegisterSubmit = (event) => {
     event.preventDefault();
     const email = this.state.newUserCredentials.email;
@@ -120,6 +126,8 @@ class App extends React.Component {
       .then((result) => {
         console.log("it is now " + this.state.newUserCredentials.email + " and  " + this.state.newUserCredentials.password);
         console.log("user register result: ", result);
+        
+        this.setRegisteredTo(true);
       })
   };
 
@@ -152,7 +160,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <Router>
+          <Router history={this.history}>
               <Navbar />
               <Routes>
                   <Route path='/' element={<Home />} />
@@ -166,6 +174,8 @@ class App extends React.Component {
                       task="Register"
                       handleChange={this.handleRegisterFormChange} 
                       handleSubmit={this.handleRegisterSubmit} 
+                      registered={this.state.registered}
+                      setRegisteredTo={this.setRegisteredTo}
                       />} />
                   {/* <Route path='/blogs' element={<Blogs />} />
                   <Route path='/sign-up' element={<SignUp />} /> */}
