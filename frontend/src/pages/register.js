@@ -9,7 +9,7 @@ class Register extends React.Component {
         if(registered) {
             setRegisteredTo(false);
             return (
-                <Navigate to="/" />
+                <Navigate to="/login" />
             )
         }
         return (

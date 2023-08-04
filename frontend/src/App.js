@@ -21,7 +21,13 @@ class App extends React.Component {
       email: "",
       password: ""
     },
-    registered: false
+    registered: false,
+    userCredentials: {
+      email: "",
+      password: ""
+    },
+    loggedIn: false,
+    userEmail: ""
   }
 
   componentDidMount() {
@@ -30,6 +36,7 @@ class App extends React.Component {
     this.getPersons();
     this.getPosts();
   }
+  
   getPersons = () => {
     axios.get("http://localhost:8080/persons")
       .then(result => {
@@ -94,12 +101,12 @@ class App extends React.Component {
       .catch((error) => console.log(error))
   }
 
-  registerUser = () => {
-    const email = prompt("enter email");
-    const password = prompt("enter password");
-    axios.post("http://localhost:8080/register", {email, password})
-      .then(() => console.log("success"));
-  }
+  // registerUser = () => {
+  //   const email = prompt("enter email");
+  //   const password = prompt("enter password");
+  //   axios.post("http://localhost:8080/register", {email, password})
+  //     .then(() => console.log("success"));
+  // }
 
   handleRegisterFormChange = (event) => {
       let input_name = event.target.name;
@@ -120,15 +127,13 @@ class App extends React.Component {
     event.preventDefault();
     const email = this.state.newUserCredentials.email;
     const password = this.state.newUserCredentials.password;
-    console.log("in register submit");
-    //this.setState({ newUserCredentials: { email: "", password: "" } });
-    axios.post("http://localhost:8080/register", {email, password})
+    this.setState({ newUserCredentials: { email: "", password: "" } });
+    axios.post("http://localhost:8080/register", {email, password}, {withCredentials: true})
       .then((result) => {
-        console.log("it is now " + this.state.newUserCredentials.email + " and  " + this.state.newUserCredentials.password);
-        console.log("user register result: ", result);
-        
+        console.log(result);
         this.setRegisteredTo(true);
       })
+      .catch(errror => console.log(errror))
   };
 
   handleLoginFormChange = (event) => {
@@ -140,14 +145,33 @@ class App extends React.Component {
       userCredentials[input_name] = input_value;
       this.setState({ userCredentials: userCredentials });
     }
-};
+  };
 
-  handleLoginSubmit = () => {
-    const email = this.state.newUserCredentials.email;
-    const password = this.state.newUserCredentials.password;
+  setLoggedInTo = (value) => {
+    this.setState({ loggedIn: value });
+  }
+
+  handleLoginSubmit = (event) => {
+    event.preventDefault();
+    const email = this.state.userCredentials.email;
+    const password = this.state.userCredentials.password;
     this.setState({ userCredentials: { email: "", password: "" } });
-    axios.post("http://localhost:8080/login", {email, password})
-      .then()
+    axios.post("http://localhost:8080/login", {email, password}, {withCredentials: true})
+      .then(result => {
+        console.log(result);
+        if(result.data.Login) {
+          console.log("Log submit: ", result.data.useremail);
+          this.setUserEmail(result.data.useremail)
+          this.setLoggedInTo(true);
+        } else {
+          alert("No record");
+        }
+      })
+      .catch(error => console.log(error))
+  };
+
+  setUserEmail = (email) => {
+    this.setState({userEmail: email});
   };
 
   getUsers = () => {
@@ -163,11 +187,15 @@ class App extends React.Component {
           <Router history={this.history}>
               <Navbar />
               <Routes>
-                  <Route path='/' element={<Home />} />
+                  <Route  path='/' element={<Home
+                    userEmail={this.state.userEmail}
+                  />} />
                   <Route path='/login' element={<Login
                     task="Login"
                     handleChange={this.handleLoginFormChange} 
                     handleSubmit={this.handleLoginSubmit}
+                    loggedIn={this.state.loggedIn}
+                    setLoggedInTo={this.setLoggedInTo}
                      />} />
                   <Route path='/register' 
                     element={<Register 

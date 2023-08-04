@@ -2,24 +2,38 @@ const express = require("express");
 const {getPersons, addPreson, deletePerson, createTablePosts} = require("./person_model");
 
 const cors = require("cors");
-const cookieSession = require("cookie-session");
-
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const session = require("express-session");
 const app = express();
 const PORT = 8080;
-app.use(cors());
-app.use(express.json());
-app.use(cookieSession({
-    name: "session",
-    keys: ["secret"],
-    maxAge: 24 * 60 * 60 * 1000
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true
 }));
+app.use(express.json());
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+        maxAge: 24 * 60 * 60 * 1000
+    }
+}))
+
 const personsRouter = require("./routes/persons");
 const postsRouter = require("./routes/posts");
 const registerRouter = require("./routes/register");
+const loginRouter = require("./routes/login");
 const usersRouter = require("./routes/users");
 app.use("/persons", personsRouter);
 app.use("/posts", postsRouter);
 app.use("/register", registerRouter);
+app.use("/login", loginRouter);
 app.use("/users", usersRouter);
 
 const obj = {

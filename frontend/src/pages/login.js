@@ -1,8 +1,16 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
 
 class Login extends React.Component {
     render() {
-        let { handleChange, handleSubmit } = this.props;
+        let { handleChange, handleSubmit, loggedIn, setLoggedInTo } = this.props;
+
+        if(loggedIn) {
+            return(
+                <Navigate to="/" />
+            )
+        }
+
         return (
             <form onSubmit={handleSubmit}>
                 <h3>Login</h3>
