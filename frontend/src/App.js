@@ -155,14 +155,15 @@ class App extends React.Component {
     event.preventDefault();
     const email = this.state.userCredentials.email;
     const password = this.state.userCredentials.password;
+    console.log("in submit: " + email + " " + password);
     this.setState({ userCredentials: { email: "", password: "" } });
     axios.post("http://localhost:8080/login", {email, password}, {withCredentials: true})
       .then(result => {
         console.log(result);
         if(result.data.Login) {
-          console.log("Log submit: ", result.data.useremail);
-          this.setUserEmail(result.data.useremail)
-          this.setLoggedInTo(true);
+          console.log("Log submit: ", result.data.userEmail);
+          // this.setUserEmail(result.data.useremail)
+          // this.setLoggedInTo(true);
         } else {
           alert("No record");
         }
@@ -189,6 +190,9 @@ class App extends React.Component {
               <Routes>
                   <Route  path='/' element={<Home
                     userEmail={this.state.userEmail}
+                    setUserEmail={this.setUserEmail}
+                    loggedIn={this.state.loggedIn}
+                    setLoggedInTo={this.setLoggedInTo}
                   />} />
                   <Route path='/login' element={<Login
                     task="Login"
